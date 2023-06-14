@@ -6,7 +6,7 @@ const recipes = require("../controllers/recipes");
 
 router.get("/", async (req, res) => {
     console.log("hola soy recipes");
-    res.json(await recipes.getRecipes());
+    res.json(await recipes.getRecipes(req.query.ingredient));
 });
 
 

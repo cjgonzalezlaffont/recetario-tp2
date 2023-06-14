@@ -1,7 +1,7 @@
 const recipes = require('../data/recipes');
 
-async function getRecipes(){    
-    return recipes.getRecipes();
+async function getRecipes(ingredient){    
+    return recipes.getRecipes(ingredient);
 }
 
 module.exports = {getRecipes};
