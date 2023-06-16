@@ -8,4 +8,22 @@ async function addUser(user) {
   return users.addUser(user);
 }
 
-module.exports = { getUsers, addUser };
+async function deleteUser(id) {
+  return users.deleteUser(id);
+}
+
+async function updateUser(user) {
+  return users.updateUser(user);
+}
+
+async function updatePasswordFromEmail(email, password) {
+  return users.updatePasswordFromEmail(email, password);
+}
+
+module.exports = {
+  getUsers,
+  addUser,
+  deleteUser,
+  updateUser,
+  updatePasswordFromEmail,
+};
