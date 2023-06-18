@@ -4,6 +4,7 @@ const USERS = "users";
 const { ObjectId } = require("mongodb");
 const bcrypt = require("bcryptjs");
 
+
 async function getUsers() {
   const connectiondb = await conn.getConnection();
   const users = await connectiondb
@@ -87,3 +88,4 @@ module.exports = {
   updateUser,
   updatePasswordFromEmail,
 };
+
