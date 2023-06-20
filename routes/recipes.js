@@ -9,10 +9,14 @@ const recipes = require("../controllers/recipes");
   res.json(await recipes.getRecipes(req.query.ingredient));
 }); */
 
-router.get("/:ingredients", async (req, res) => {
-  console.log("router recipes ingredientes");
-  console.log(req.params.ingredients);
-  res.json(await recipes.getRecipes(req.params.ingredients));
+router.get("/:queryIngredients", async (req, res) => {
+  //console.log(req.params.queryIngredients);
+  res.json(await recipes.getRecipes(req.params.queryIngredients));
+});
+
+router.get("/Title/:queryTitle", async (req, res) => {
+  //console.log(req.params.queryTitle);
+  res.json(await recipes.getRecipesByTitle(req.params.queryTitle));
 });
 
 module.exports = router;

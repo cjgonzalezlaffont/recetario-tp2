@@ -10,7 +10,6 @@ const images = require("../controllers/images");
 }); */
 
 router.get("/:recipe", async (req, res) => {
-  console.log("router imagenes parametro");
   console.log(req.params.recipe);
   res.json(await images.getImage(req.params.recipe));
 });
