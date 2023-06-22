@@ -3,6 +3,8 @@ const DATABASE = "recetario";
 const USERS = "users";
 const { ObjectId } = require("mongodb");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 
 async function getUsers() {
   const connectiondb = await conn.getConnection();
@@ -80,10 +82,46 @@ async function updatePasswordFromEmail(email, password) {
   }
 }
 
+function generatedToken(user) {
+  const token = jwt.sign(
+    { _id: user._id, email: user.email },
+    process.env.SECRET,
+    { expiresIn: "4h" }
+  );
+  return token;
+}
+
+//Find by email
+async function findByCredential(email, password) {
+
+  const connectiondb =await conn.getConnection();
+  const user = await connectiondb
+    .db(DATABASE)
+    .collection(USERS)
+    .findOne({ email: email });
+
+  if (!user) {
+    throw new Error("Credenciales no validas, usuario no valido");
+  }
+  console.log("pass", password)
+  console.log("us", user)
+  console.log("pass cuando voy a buscaar el user", user.password)
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new Error("Credenciales no validas");
+  }
+
+  return user;
+}
+
+
 module.exports = {
   getUsers,
   addUser,
   deleteUser,
   updateUser,
   updatePasswordFromEmail,
+  findByCredential,
+  generatedToken
 };
