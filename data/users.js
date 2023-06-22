@@ -82,6 +82,7 @@ async function updatePasswordFromEmail(email, password) {
   }
 }
 
+// generador de token, vencimiento cada 4 hs
 function generatedToken(user) {
   const token = jwt.sign(
     { _id: user._id, email: user.email },
@@ -91,7 +92,7 @@ function generatedToken(user) {
   return token;
 }
 
-//Find by email
+// Obtener credenciales por email
 async function findByCredential(email, password) {
 
   const connectiondb =await conn.getConnection();
@@ -101,15 +102,12 @@ async function findByCredential(email, password) {
     .findOne({ email: email });
 
   if (!user) {
-    throw new Error("Credenciales no validas, usuario no valido");
+    throw new Error("Credenciales invalidas");
   }
-  console.log("pass", password)
-  console.log("us", user)
-  console.log("pass cuando voy a buscaar el user", user.password)
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    throw new Error("Credenciales no validas");
+    throw new Error("Credenciales invalidas");
   }
 
   return user;
