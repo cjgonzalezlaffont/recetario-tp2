@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 
+
 async function getUsers() {
   const connectiondb = await conn.getConnection();
   const users = await connectiondb
@@ -123,3 +124,4 @@ module.exports = {
   findByCredential,
   generatedToken
 };
+
