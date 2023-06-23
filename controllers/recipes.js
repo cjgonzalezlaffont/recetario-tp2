@@ -6,9 +6,11 @@ async function getRecipes(queryIngredients) {
   const recipePromises = recipesAll.map(async (recipe) => {
     const imagePromise = image.getImage(recipe.title);
     const imageURL = await imagePromise;
+    const ingredientes = await recipe.ingredients.split("|");
+
     return {
       title: recipe.title,
-      ingredients: recipe.ingredients,
+      ingredients: ingredientes,
       instructions: recipe.instructions,
       image: imageURL,
     };
@@ -17,6 +19,7 @@ async function getRecipes(queryIngredients) {
   //console.log(recipesFilter);
   return recipesFilter;
 }
+
 
 async function getRecipesByTitle(queryTitle) {
   const recipesAll = await recipes.getRecipes(queryTitle);
