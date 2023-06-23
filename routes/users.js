@@ -1,12 +1,9 @@
 var express = require("express");
 var router = express.Router();
 const controller = require("../controllers/users");
-const usersData = require("../data/users");
-const auth = require("../middleware/Auth.js");
-
 
 /* GET users listing. */
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   res.json(await controller.getUsers());
 });
 
@@ -15,19 +12,6 @@ router.post("/", async (req, res) => {
   const user = req.body;
   const result = await controller.addUser(user);
   res.json(result);
-});
-
-
-
-router.post("/login", async (req, res) => {
-  try {
-    const user = await usersData.findByCredential(req.body.email, req.body.password);
-    const token = usersData.generatedToken(user);
-    res.send({ user, token });
-  } catch (error) {
-    console.log(error);
-    res.status(401).send(error.message);
-  }
 });
 
 /*DELETE de un solo user por ID*/
