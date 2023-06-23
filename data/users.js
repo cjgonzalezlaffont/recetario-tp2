@@ -3,8 +3,6 @@ const DATABASE = "recetario";
 const USERS = "users";
 const { ObjectId } = require("mongodb");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
 
 
 async function getUsers() {
@@ -83,45 +81,11 @@ async function updatePasswordFromEmail(email, password) {
   }
 }
 
-// generador de token, vencimiento cada 4 hs
-function generatedToken(user) {
-  const token = jwt.sign(
-    { _id: user._id, email: user.email },
-    process.env.SECRET,
-    { expiresIn: "4h" }
-  );
-  return token;
-}
-
-// Obtener credenciales por email
-async function findByCredential(email, password) {
-
-  const connectiondb =await conn.getConnection();
-  const user = await connectiondb
-    .db(DATABASE)
-    .collection(USERS)
-    .findOne({ email: email });
-
-  if (!user) {
-    throw new Error("Credenciales invalidas");
-  }
-  const isMatch = await bcrypt.compare(password, user.password);
-
-  if (!isMatch) {
-    throw new Error("Credenciales invalidas");
-  }
-
-  return user;
-}
-
-
 module.exports = {
   getUsers,
   addUser,
   deleteUser,
   updateUser,
   updatePasswordFromEmail,
-  findByCredential,
-  generatedToken
 };
 
