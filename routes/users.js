@@ -57,4 +57,34 @@ router.put("/email/:email", async (req, res) => {
   }
 });
 
+
+// get user by id
+router.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  console.log(id)
+  res.json(await controller.findUserById(id));
+});
+
+
+// vamos a recibir la receta con un ID e ir a buscarlo a la base como tal? o vamos a manejarla sin objeto
+router.put("/add_favorites/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const title = req.body.title;
+  const ingredients = req.body.ingredients;
+  const instructions = req.body.instructions;
+
+  const result = await controller.addFavorites(userId, title, ingredients, instructions);
+    res.json(result);
+});
+
+router.put("/delete_favorites/:userId/recipes/:recipeId", async (req, res) => {
+  const userId = req.params.userId;
+  const recipeId = req.params.recipeId;
+  const result = await controller.deleteFavorites(userId, recipeId);
+    res.json(result);
+});
+
+
+
+
 module.exports = router;

@@ -115,6 +115,64 @@ async function findByCredential(email, password) {
 }
 
 
+// obtener un usuario por id
+async function findUserById(id){
+  const connectiondb = await conn.getConnection();
+  const user = await connectiondb
+                      .db(DATABASE)
+                      .collection(USERS)
+                      .find({_id: new ObjectId(id)}) 
+                      .toArray();  
+  return user;
+}
+
+
+async function addFavorites(userId, title, ingredients, instructions) {
+  const connectiondb = await conn.getConnection();
+
+  function generarId() {
+    return Math.floor(Math.random() * 100000);
+  }
+  const newRecipe = {
+    //id: generarId(),
+    title: title,
+    ingredients: ingredients,
+    instructions: instructions
+  };
+
+  const user = await connectiondb
+    .db(DATABASE)
+    .collection(USERS)
+    .updateOne({ _id: new ObjectId(userId) }, { $push: {favoritesRecipes: newRecipe } });
+  return user;
+}
+
+
+
+async function deleteFavorites(userId, recipeId) {
+  const connectiondb = await conn.getConnection();
+
+  const result = await connectiondb
+    .db(DATABASE)
+    .collection(USERS)
+    .updateOne(
+      { _id: new ObjectId(userId) },
+      { $pull: { "favoritesRecipes.0": { id: recipeId } } }
+    );
+
+  console.log(result);
+
+  if (result.modifiedCount > 0) {
+    console.log('Receta eliminada de los favoritos');
+  } else {
+    console.log('No se encontró la receta en los favoritos');
+  }
+
+  return result;
+}
+
+
+
 module.exports = {
   getUsers,
   addUser,
@@ -122,6 +180,9 @@ module.exports = {
   updateUser,
   updatePasswordFromEmail,
   findByCredential,
-  generatedToken
+  generatedToken,
+  findUserById,
+  addFavorites,
+  deleteFavorites
 };
 
