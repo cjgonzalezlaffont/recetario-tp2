@@ -5,8 +5,6 @@ const { ObjectId } = require("mongodb");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-
-
 async function getUsers() {
   const connectiondb = await conn.getConnection();
   const users = await connectiondb
@@ -95,27 +93,73 @@ function generatedToken(user) {
 
 // Obtener credenciales por email
 async function findByCredential(email, password) {
-
-  const connectiondb =await conn.getConnection();
+  const connectiondb = await conn.getConnection();
   const user = await connectiondb
     .db(DATABASE)
     .collection(USERS)
     .findOne({ email: email });
-
   if (!user) {
     throw new Error("Credenciales invalidas");
   }
   const isMatch = await bcrypt.compare(password, user.password);
-
   if (!isMatch) {
     throw new Error("Credenciales invalidas");
   }
-
-  const token = jwt.sign({ userId: user._id }, 'secretKey');
-
-  return user, token;
+  return user;
 }
 
+// obtener un usuario por id
+async function findUserById(id) {
+  const connectiondb = await conn.getConnection();
+  const user = await connectiondb
+    .db(DATABASE)
+    .collection(USERS)
+    .find({ _id: new ObjectId(id) })
+    .toArray();
+  return user;
+}
+
+/* async function addFavorites(userId, title, ingredients, instructions) {
+  const connectiondb = await conn.getConnection();
+  function generarId() {
+    return Math.floor(Math.random() * 100000);
+  }
+  const newRecipe = {
+    id: generarId(),
+    title: title,
+    ingredients: ingredients,
+    instructions: instructions,
+  };
+  const user = await connectiondb
+    .db(DATABASE)
+    .collection(USERS)
+    .updateOne(
+      { _id: new ObjectId(userId) },
+      { $push: { favoritesRecipes: newRecipe } }
+    );
+  return user;
+} */
+
+/* async function deleteFavorites(usuarioId, recetaId) {
+  try {
+    const connectiondb = await conn.getConnection();
+    const filter = { _id: new ObjectId(usuarioId) };
+    const update = {
+      $pull: { favoritesRecipes: { $elemMatch: { id: recetaId } } },
+    };
+    // console.log(update);
+    const result = await connectiondb
+      .db(DATABASE)
+      .collection(USERS)
+      .findOne(filter)
+      .favoritesRecipes.indexOf();
+
+    return result;
+  } catch (error) {
+    console.error("Error al eliminar la receta:", error);
+    throw error;
+  }
+} */
 
 module.exports = {
   getUsers,
@@ -124,6 +168,8 @@ module.exports = {
   updateUser,
   updatePasswordFromEmail,
   findByCredential,
-  generatedToken
+  generatedToken,
+  findUserById,
+  /* addFavorites,
+  deleteFavorites, */
 };
-

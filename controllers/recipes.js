@@ -20,7 +20,6 @@ async function getRecipes(queryIngredients) {
   return recipesFilter;
 }
 
-
 async function getRecipesByTitle(queryTitle) {
   const recipesAll = await recipes.getRecipes(queryTitle);
   const recipePromises = recipesAll.map(async (recipe) => {
@@ -37,4 +36,23 @@ async function getRecipesByTitle(queryTitle) {
   return titles;
 }
 
-module.exports = { getRecipes, getRecipesByTitle };
+async function getFavorites(userId) {
+  return recipes.getFavorites(userId);
+}
+
+async function addFavorite(favorite) {
+  console.log("CONTROLLER" + favorite);
+  return recipes.addFavorite(favorite);
+}
+
+async function deleteFavorite(idFavorite) {
+  return recipes.deleteFavorite(idFavorite);
+}
+
+module.exports = {
+  getRecipes,
+  getRecipesByTitle,
+  getFavorites,
+  addFavorite,
+  deleteFavorite,
+};
