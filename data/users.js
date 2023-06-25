@@ -111,7 +111,9 @@ async function findByCredential(email, password) {
     throw new Error("Credenciales invalidas");
   }
 
-  return user;
+  const token = jwt.sign({ userId: user._id }, 'secretKey');
+
+  return user, token;
 }
 
 
