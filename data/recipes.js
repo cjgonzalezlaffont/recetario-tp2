@@ -62,7 +62,7 @@ async function checkFavoriteRecipeByUserAndName(userId, recipeTitle) {
   const res = await clientMongo
     .db(DATABASE)
     .collection(RECIPES)
-    .findOne({ userId: userId }, { title: recipeTitle });
+    .findOne({ $and: [{ userId: userId }, { title: recipeTitle }] });
   return res;
 }
 
