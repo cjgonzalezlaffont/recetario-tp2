@@ -134,7 +134,7 @@ async function addFavorites(userId, title, ingredients, instructions) {
     return Math.floor(Math.random() * 100000);
   }
   const newRecipe = {
-    //id: generarId(),
+    id: generarId(),
     title: title,
     ingredients: ingredients,
     instructions: instructions
@@ -148,30 +148,40 @@ async function addFavorites(userId, title, ingredients, instructions) {
 }
 
 
-
 async function deleteFavorites(userId, recipeId) {
   const connectiondb = await conn.getConnection();
 
-  const result = await connectiondb
+  const user = await connectiondb
     .db(DATABASE)
     .collection(USERS)
-    .updateOne(
-      { _id: new ObjectId(userId) },
-      { $pull: { "favoritesRecipes.0": { id: recipeId } } }
-    );
+    .findOne({ _id: new ObjectId(userId) });
 
-  console.log(result);
+  if (user) {
+    const favoriteRecipeIndex = user.favoritesRecipes.findIndex(recipe => recipe.id == recipeId);
 
-  if (result.modifiedCount > 0) {
-    console.log('Receta eliminada de los favoritos');
+    if (favoriteRecipeIndex !== -1) {
+      user.favoritesRecipes.splice(favoriteRecipeIndex, 1);
+
+      const updateResult = await connectiondb
+        .db(DATABASE)
+        .collection(USERS)
+        .updateOne(
+          { _id: new ObjectId(userId) },
+          { $set: { favoritesRecipes: user.favoritesRecipes } }
+        );
+
+      if (updateResult.modifiedCount === 1) {
+        console.log('Receta favorita eliminada con éxito');
+      } else {
+        console.log('No se pudo eliminar la receta favorita');
+      }
+    } else {
+      console.log('La receta favorita no fue encontrada');
+    }
   } else {
-    console.log('No se encontró la receta en los favoritos');
+    console.log('Usuario no encontrado');
   }
-
-  return result;
 }
-
-
 
 module.exports = {
   getUsers,
