@@ -39,4 +39,13 @@ router.delete("/favorites/delete/:_Id", async (req, res) => {
   res.json(await recipes.deleteFavorite(req.params._Id));
 });
 
+router.get("/favorites/:recipeTitle/user/:userId", async (req, res) => {
+  res.json(
+    await recipes.checkFavoriteRecipeByUserAndName(
+      req.params.userId,
+      req.params.recipeTitle
+    )
+  );
+});
+
 module.exports = router;

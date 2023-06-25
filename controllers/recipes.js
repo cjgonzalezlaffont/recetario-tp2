@@ -49,10 +49,15 @@ async function deleteFavorite(idFavorite) {
   return recipes.deleteFavorite(idFavorite);
 }
 
+async function checkFavoriteRecipeByUserAndName(userId, recipeTitle) {
+  return recipes.checkFavoriteRecipeByUserAndName(userId, recipeTitle);
+}
+
 module.exports = {
   getRecipes,
   getRecipesByTitle,
   getFavorites,
   addFavorite,
   deleteFavorite,
+  checkFavoriteRecipeByUserAndName,
 };

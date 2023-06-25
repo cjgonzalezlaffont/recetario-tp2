@@ -57,10 +57,20 @@ async function deleteFavorite(idFavorite) {
   return res;
 }
 
+async function checkFavoriteRecipeByUserAndName(userId, recipeTitle) {
+  const clientMongo = await conn.getConnection();
+  const res = await clientMongo
+    .db(DATABASE)
+    .collection(RECIPES)
+    .findOne({ userId: userId }, { title: recipeTitle });
+  return res;
+}
+
 module.exports = {
   getRecipes,
   getRecipesByTitle,
   getFavorites,
   addFavorite,
   deleteFavorite,
+  checkFavoriteRecipeByUserAndName,
 };
