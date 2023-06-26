@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const recipes = require("../controllers/recipes");
+const auth = require("../middleware/Auth");
 
 /* GET users listing. */
 
@@ -19,7 +20,9 @@ router.get("/Title/:queryTitle", async (req, res) => {
   res.json(await recipes.getRecipesByTitle(req.params.queryTitle));
 });
 
-router.get("/favorites/:userId", async (req, res) => {
+// PRUEBA JWT ****************
+
+router.get("/favorites/:userId", auth, async (req, res) => {
   res.json(await recipes.getFavorites(req.params.userId));
 });
 
