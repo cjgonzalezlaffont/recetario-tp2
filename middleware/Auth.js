@@ -8,12 +8,12 @@ function auth(req, res, next) {
     //let token = req.header("Authorization");
     const token = req.headers.authorization?.split(" ")[1];
     const user = jwt.verify(token, process.env.SECRET);
-    console.log(token);
-    console.log(user);
+    /*     console.log(token);
+    console.log(user); */
     next();
   } catch (error) {
     res.status(401).send({ error: error.message });
-    console.log("AUTH CATCH");
+    /*     console.log("AUTH CATCH"); */
   }
 }
 

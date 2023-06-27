@@ -38,7 +38,7 @@ router.delete("/:id", auth, async (req, res) => {
 });
 
 /*PUT de un solo user por ID*/
-router.put("/:id", auth,  async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   const id = req.params.id;
   const user = req.body;
   user._id = id;
@@ -48,7 +48,7 @@ router.put("/:id", auth,  async (req, res) => {
 
 router.put("/email/:email", auth, async (req, res) => {
   const email = req.params.email;
-  const password = req.body;
+  const password = req.body.password;
   const result = await controller.updatePasswordFromEmail(email, password);
   try {
     res.json(result);

@@ -70,14 +70,13 @@ async function updatePasswordFromEmail(email, password) {
       },
     };
     const query = { email: email };
-    console.log(email);
     const result = await clientMongo
       .db(DATABASE)
       .collection(USERS)
       .findOneAndUpdate(query, newValue);
     return result;
   } catch {
-    console.log("password");
+    console.log("catch");
   }
 }
 
