@@ -10,13 +10,11 @@ const auth = require("../middleware/Auth");
   res.json(await recipes.getRecipes(req.query.ingredient));
 }); */
 
-router.get("/:queryIngredients", async (req, res) => {
-  //console.log(req.params.queryIngredients);
+router.get("/:queryIngredients", auth, async (req, res) => {
   res.json(await recipes.getRecipes(req.params.queryIngredients));
 });
 
-router.get("/Title/:queryTitle", async (req, res) => {
-  //console.log(req.params.queryTitle);
+router.get("/Title/:queryTitle", auth,  async (req, res) => {
   res.json(await recipes.getRecipesByTitle(req.params.queryTitle));
 });
 
@@ -26,7 +24,7 @@ router.get("/favorites/:userId", auth, async (req, res) => {
   res.json(await recipes.getFavorites(req.params.userId));
 });
 
-router.post("/favorites/add", async (req, res) => {
+router.post("/favorites/add", auth, async (req, res) => {
   res.json(
     await recipes.addFavorite({
       title: req.body.title,
@@ -38,11 +36,11 @@ router.post("/favorites/add", async (req, res) => {
   );
 });
 
-router.delete("/favorites/delete/:_Id", async (req, res) => {
+router.delete("/favorites/delete/:_Id", auth, async (req, res) => {
   res.json(await recipes.deleteFavorite(req.params._Id));
 });
 
-router.get("/favorites/:recipeTitle/user/:userId", async (req, res) => {
+router.get("/favorites/:recipeTitle/user/:userId", auth, async (req, res) => {
   res.json(
     await recipes.checkFavoriteRecipeByUserAndName(
       req.params.userId,

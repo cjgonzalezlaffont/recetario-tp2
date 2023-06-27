@@ -34,6 +34,7 @@ async function getFavorites(userId) {
     .collection(RECIPES)
     .find({ userId: userId })
     .toArray();
+
   return favorites;
 }
 

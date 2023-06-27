@@ -16,7 +16,6 @@ async function getRecipes(queryIngredients) {
     };
   });
   const recipesFilter = await Promise.all(recipePromises);
-  //console.log(recipesFilter);
   return recipesFilter;
 }
 
@@ -31,7 +30,6 @@ async function getRecipesByTitle(queryTitle) {
     };
   });
   const titles = await Promise.all(recipePromises);
-  //console.log(titles);
 
   return titles;
 }

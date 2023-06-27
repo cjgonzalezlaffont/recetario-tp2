@@ -31,14 +31,14 @@ router.post("/login", async (req, res) => {
 });
 
 /*DELETE de un solo user por ID*/
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   const id = req.params.id;
   const result = await controller.deleteUser(id);
   res.json(result);
 });
 
 /*PUT de un solo user por ID*/
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth,  async (req, res) => {
   const id = req.params.id;
   const user = req.body;
   user._id = id;
@@ -46,7 +46,7 @@ router.put("/:id", async (req, res) => {
   res.json(result);
 });
 
-router.put("/email/:email", async (req, res) => {
+router.put("/email/:email", auth, async (req, res) => {
   const email = req.params.email;
   const password = req.body;
   const result = await controller.updatePasswordFromEmail(email, password);
