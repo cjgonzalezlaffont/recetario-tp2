@@ -3,22 +3,14 @@ var router = express.Router();
 const recipes = require("../controllers/recipes");
 const auth = require("../middleware/Auth");
 
-/* GET users listing. */
-
-/* router.get("/", async (req, res) => {
-  console.log("router recipes");
-  res.json(await recipes.getRecipes(req.query.ingredient));
-}); */
-
-router.get("/:queryIngredients", auth, async (req, res) => {
+router.get("/:queryIngredients", async (req, res) => {
   res.json(await recipes.getRecipes(req.params.queryIngredients));
 });
 
-router.get("/Title/:queryTitle", auth,  async (req, res) => {
+router.get("/Title/:queryTitle",  async (req, res) => {
   res.json(await recipes.getRecipesByTitle(req.params.queryTitle));
 });
 
-// PRUEBA JWT ****************
 
 router.get("/favorites/:userId", auth, async (req, res) => {
   res.json(await recipes.getFavorites(req.params.userId));
@@ -40,6 +32,8 @@ router.delete("/favorites/delete/:_Id", auth, async (req, res) => {
   res.json(await recipes.deleteFavorite(req.params._Id));
 });
 
+
+//
 router.get("/favorites/:recipeTitle/user/:userId", auth, async (req, res) => {
   res.json(
     await recipes.checkFavoriteRecipeByUserAndName(
